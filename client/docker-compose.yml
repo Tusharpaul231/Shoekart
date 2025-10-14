@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  shoekart-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shoekart-client
+    ports:
+      - "5173:80"
+    env_file:
+      - .env
+    environment:
+      - VITE_BACKEND_URL=http://shoekart-server:5000
+    networks:
+      - shoekart-net
+
+networks:
+  shoekart-net:
+    external: true
