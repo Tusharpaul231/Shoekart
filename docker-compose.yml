@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  shoekart-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: shoekart-server
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    networks:
+      - shoekart-net
+
+  shoekart-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - VITE_BACKEND_URL=http://localhost:5000
+    container_name: shoekart-client
+    ports:
+      - "5173:80"
+    depends_on:
+      - shoekart-server
+    networks:
+      - shoekart-net
+
+networks:
+  shoekart-net:
+    driver: bridge
